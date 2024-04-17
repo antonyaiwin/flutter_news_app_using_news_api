@@ -32,18 +32,21 @@ class ArticleCard extends StatelessWidget {
         ),
         child: Column(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: AspectRatio(
-                aspectRatio: 16 / 9,
-                child: CachedNetworkImage(
-                  fit: BoxFit.cover,
-                  imageUrl: article?.urlToImage ?? '',
-                  placeholder: (context, url) =>
-                      const Center(child: CircularProgressIndicator()),
-                  errorWidget: (context, url, error) => Image.asset(
-                    'assets/images/no_image.jpg',
+            Hero(
+              tag: article ?? 0,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: CachedNetworkImage(
                     fit: BoxFit.cover,
+                    imageUrl: article?.urlToImage ?? '',
+                    placeholder: (context, url) =>
+                        const Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) => Image.asset(
+                      'assets/images/no_image.jpg',
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),

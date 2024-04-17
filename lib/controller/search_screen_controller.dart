@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-
-import 'package:flutter_news_app/core/constants/string_constants.dart';
 import 'package:flutter_news_app/model/news_api_response_model.dart';
 import 'package:flutter_news_app/utils/debouncer.dart';
 import 'package:http/http.dart' as http;

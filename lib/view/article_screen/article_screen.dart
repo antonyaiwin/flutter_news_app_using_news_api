@@ -23,17 +23,20 @@ class ArticleScreen extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.all(3),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: AspectRatio(
-                aspectRatio: 16 / 9,
-                child: CachedNetworkImage(
-                  fit: BoxFit.cover,
-                  imageUrl: article.urlToImage ?? '',
-                  placeholder: (context, url) =>
-                      const Center(child: CircularProgressIndicator()),
-                  errorWidget: (context, url, error) =>
-                      Image.asset('assets/images/no_image.jpg'),
+            child: Hero(
+              tag: article,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    imageUrl: article.urlToImage ?? '',
+                    placeholder: (context, url) =>
+                        const Center(child: CircularProgressIndicator()),
+                    errorWidget: (context, url, error) =>
+                        Image.asset('assets/images/no_image.jpg'),
+                  ),
                 ),
               ),
             ),
