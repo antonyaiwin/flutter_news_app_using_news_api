@@ -27,7 +27,7 @@ class ArticleCard extends StatelessWidget {
         padding: const EdgeInsets.all(4),
         margin: const EdgeInsets.all(15),
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 236, 236, 236),
+          color: Color.fromARGB(255, 41, 41, 41),
           borderRadius: BorderRadius.circular(15),
         ),
         child: Column(

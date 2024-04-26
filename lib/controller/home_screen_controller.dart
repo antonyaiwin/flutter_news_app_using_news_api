@@ -11,6 +11,7 @@ class HomeScreenController extends ChangeNotifier {
   NewsApiResponseModel? newsApiResponseModel;
   bool isLoading = false;
   List<String> categories = [
+    'all',
     'business',
     'entertainment',
     'general',

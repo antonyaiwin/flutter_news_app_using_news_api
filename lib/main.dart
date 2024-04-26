@@ -23,12 +23,21 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.deepPurple,
+            brightness: Brightness.dark,
+          ),
           useMaterial3: true,
           inputDecorationTheme: InputDecorationTheme(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
             ),
+          ),
+          textTheme: TextTheme(
+            bodyMedium: Theme.of(context)
+                .textTheme
+                .bodyMedium
+                ?.copyWith(color: const Color.fromARGB(255, 147, 147, 147)),
           ),
         ),
         home: const HomeScreen(),

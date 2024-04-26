@@ -15,6 +15,7 @@ class SearchScreen extends StatelessWidget {
           controller: context.read<SearchScreenController>().searchController,
           decoration: const InputDecoration(
             hintText: 'Search',
+            contentPadding: EdgeInsets.all(10),
             isDense: true,
           ),
           onChanged: (value) {

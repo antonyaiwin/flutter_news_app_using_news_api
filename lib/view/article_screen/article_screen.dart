@@ -19,53 +19,57 @@ class ArticleScreen extends StatelessWidget {
           IconButton(onPressed: () {}, icon: const Icon(Icons.more_horiz))
         ],
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(3),
-            child: Hero(
-              tag: article,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: CachedNetworkImage(
-                    fit: BoxFit.cover,
-                    imageUrl: article.urlToImage ?? '',
-                    placeholder: (context, url) =>
-                        const Center(child: CircularProgressIndicator()),
-                    errorWidget: (context, url, error) =>
-                        Image.asset('assets/images/no_image.jpg'),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(3),
+              child: Hero(
+                tag: article,
+                child: ClipRRect(
+                  // borderRadius: BorderRadius.circular(10),
+                  child: AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: CachedNetworkImage(
+                      fit: BoxFit.cover,
+                      imageUrl: article.urlToImage ?? '',
+                      placeholder: (context, url) =>
+                          const Center(child: CircularProgressIndicator()),
+                      errorWidget: (context, url, error) =>
+                          Image.asset('assets/images/no_image.jpg'),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: Column(
-              children: [
-                Text(
-                  article.title,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge
-                      ?.copyWith(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10),
-                ArticleAuthorDateView(article: article),
-                const SizedBox(height: 10),
-                Text(article.content ?? ''),
-                ElevatedButton(
-                  onPressed: () {
-                    launchUrl(Uri.parse(article.url));
-                  },
-                  child: const Text('Read more'),
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                children: [
+                  Text(
+                    article.title,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10),
+                  ArticleAuthorDateView(article: article),
+                  const SizedBox(height: 10),
+                  Text(article.source.name),
+                  const SizedBox(height: 10),
+                  Text(article.content ?? ''),
+                  ElevatedButton(
+                    onPressed: () {
+                      launchUrl(Uri.parse(article.url));
+                    },
+                    child: const Text('Read more'),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
