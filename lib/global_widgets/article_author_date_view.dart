@@ -15,23 +15,28 @@ class ArticleAuthorDateView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Icon(Icons.person),
+        const Icon(Icons.live_tv_rounded),
         const SizedBox(width: 4),
         Flexible(
           child: Text(
-            article.author ?? '',
+            article.source.name,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: Theme.of(context)
-                .textTheme
-                .bodyMedium
-                ?.copyWith(fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
           ),
         ),
         const SizedBox(width: 5),
         const Text('•'),
         const SizedBox(width: 5),
-        Text(DateFormat('EEEE, d MMMM yyyy').format(article.publishedAt)),
+        Text(
+          DateFormat('EEEE, d MMMM yyyy').format(article.publishedAt),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Colors.white,
+              ),
+        ),
       ],
     );
   }

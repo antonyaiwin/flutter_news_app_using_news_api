@@ -2,13 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_news_app/controller/search_screen_controller.dart';
-import 'package:flutter_news_app/core/constants/image_constants.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller/home_screen_controller.dart';
 import '../../global_widgets/article_card.dart';
 import '../../model/news_api_response_model.dart';
+import '../saved_articles_screen/saved_articles_screen.dart';
 import '../search_screen/search_screen.dart';
+import 'widgets/category_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -23,9 +24,26 @@ class HomeScreen extends StatelessWidget {
       length: context.read<HomeScreenController>().categories.length,
       child: Scaffold(
         appBar: AppBar(
-          leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
           title: const Text('Daily News'),
           actions: [
+            Consumer<HomeScreenController>(
+              builder: (context, value, child) => DropdownButton(
+                alignment: Alignment.centerRight,
+                value: value.selectedCountryIndex,
+                icon: const Icon(Icons.location_on_rounded),
+                items: List.generate(value.countryNames.length, (index) {
+                  var map = value.countryNames;
+                  return DropdownMenuItem(
+                    value: index,
+                    child: Text(map[map.keys.elementAt(index)]!),
+                  );
+                }),
+                underline: const SizedBox(),
+                onChanged: (index) {
+                  value.onCountryChanged(index ?? 0);
+                },
+              ),
+            ),
             IconButton(
               onPressed: () {
                 Navigator.push(
@@ -40,10 +58,6 @@ class HomeScreen extends StatelessWidget {
                     ));
               },
               icon: const Icon(Icons.search),
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.notifications_outlined),
             ),
           ],
           bottom: PreferredSize(
@@ -77,69 +91,49 @@ class HomeScreen extends StatelessWidget {
             return const Center(
               child: CircularProgressIndicator(),
             );
+          } else if (value.newsApiResponseModel?.articles.isEmpty ?? true) {
+            return const Center(
+              child: Text('No articles found!'),
+            );
           } else {
-            return Expanded(
-              child: ListView.builder(
-                itemBuilder: (context, index) {
-                  Article? article =
-                      value.newsApiResponseModel?.articles[index];
-                  return ArticleCard(article: article);
-                },
-                itemCount: value.newsApiResponseModel?.articles.length ?? 0,
-              ),
+            return ListView.builder(
+              itemBuilder: (context, index) {
+                Article? article = value.newsApiResponseModel?.articles[index];
+                return ArticleCard(article: article);
+              },
+              itemCount: value.newsApiResponseModel?.articles.length ?? 0,
             );
           }
         }),
-      ),
-    );
-  }
-}
-
-class CategoryCard extends StatelessWidget {
-  const CategoryCard({
-    super.key,
-    required this.category,
-    required this.isSelected,
-    this.onTap,
-  });
-  final String category;
-  final bool isSelected;
-  final void Function()? onTap;
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(10),
-      child: Ink(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: isSelected
-              ? Border.all(
-                  color: Colors.white.withOpacity(0.7),
-                  width: 3,
-                  strokeAlign: BorderSide.strokeAlignInside,
-                )
-              : null,
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage(
-              '${ImageConstants.categoryImagesBasePath}$category.jpg',
-            ),
-            colorFilter: ColorFilter.mode(
-              Colors.black.withOpacity(0.5),
-              BlendMode.multiply,
-            ),
+        drawer: Drawer(
+          child: Column(
+            children: [
+              UserAccountsDrawerHeader(
+                accountName: Text(
+                  'Antony Aiwin',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                accountEmail: Text('antonyaiwin@mail.com'),
+                currentAccountPicture: CircleAvatar(
+                  backgroundImage: NetworkImage(
+                      'https://images.pexels.com/photos/4052800/pexels-photo-4052800.jpeg?auto=compress&cs=tinysrgb&w=600'),
+                ),
+              ),
+              ListTile(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SavedArticlesScreen(),
+                      ));
+                },
+                leading: const Icon(Icons.bookmark),
+                title: const Text('Saved Articles'),
+                trailing: const Icon(Icons.arrow_right),
+              )
+            ],
           ),
         ),
-        child: Center(
-            child: Text(
-          category[0].toUpperCase() + category.substring(1),
-          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-        )),
       ),
     );
   }
