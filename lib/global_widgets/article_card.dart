@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_news_app/controller/saved_article_controller.dart';
+import 'package:provider/provider.dart';
 
-import '../model/news_api_response_model.dart';
+import '../model/article/article_model.dart';
 import '../view/article_screen/article_screen.dart';
 import 'article_author_date_view.dart';
 
@@ -11,7 +13,7 @@ class ArticleCard extends StatelessWidget {
     required this.article,
   });
 
-  final Article? article;
+  final ArticleModel? article;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class ArticleCard extends StatelessWidget {
         padding: const EdgeInsets.all(4),
         margin: const EdgeInsets.all(15),
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 41, 41, 41),
+          color: const Color.fromARGB(255, 41, 41, 41),
           borderRadius: BorderRadius.circular(15),
         ),
         child: Column(
@@ -55,9 +57,26 @@ class ArticleCard extends StatelessWidget {
               padding: const EdgeInsets.all(15),
               child: Column(
                 children: [
-                  Text(
-                    article?.title ?? '',
-                    style: Theme.of(context).textTheme.titleMedium,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          article?.title ?? '',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ),
+                      Consumer<SavedArticleController>(
+                        builder: (context, value, child) => IconButton(
+                          onPressed: () {
+                            value.toggleSaveArticle(article!);
+                          },
+                          icon: Icon(value.isArticleSaved(article!) != null
+                              ? Icons.bookmark
+                              : Icons.bookmark_border),
+                        ),
+                      ),
+                    ],
                   ),
                   Text(article?.description ?? ''),
                   ArticleAuthorDateView(article: article!),

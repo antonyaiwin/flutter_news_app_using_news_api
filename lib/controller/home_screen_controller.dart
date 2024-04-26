@@ -23,64 +23,63 @@ class HomeScreenController extends ChangeNotifier {
   ];
 
   Map<String, String> countryNames = {
-    "global": "Global",
-    "ae": "United Arab Emirates",
     "ar": "Argentina",
-    "at": "Austria",
     "au": "Australia",
+    "at": "Austria",
     "be": "Belgium",
-    "bg": "Bulgaria",
     "br": "Brazil",
+    "bg": "Bulgaria",
     "ca": "Canada",
-    "ch": "Switzerland",
     "cn": "China",
     "co": "Colombia",
     "cu": "Cuba",
     "cz": "Czech Republic",
-    "de": "Germany",
     "eg": "Egypt",
     "fr": "France",
-    "gb": "United Kingdom",
+    "de": "Germany",
     "gr": "Greece",
     "hk": "Hong Kong",
     "hu": "Hungary",
+    "in": "India",
     "id": "Indonesia",
     "ie": "Ireland",
     "il": "Israel",
-    "in": "India",
     "it": "Italy",
     "jp": "Japan",
-    "kr": "South Korea",
-    "lt": "Lithuania",
     "lv": "Latvia",
-    "ma": "Morocco",
-    "mx": "Mexico",
+    "lt": "Lithuania",
     "my": "Malaysia",
-    "ng": "Nigeria",
+    "mx": "Mexico",
+    "ma": "Morocco",
     "nl": "Netherlands",
-    "no": "Norway",
     "nz": "New Zealand",
+    "ng": "Nigeria",
+    "no": "Norway",
     "ph": "Philippines",
     "pl": "Poland",
     "pt": "Portugal",
     "ro": "Romania",
-    "rs": "Serbia",
     "ru": "Russia",
     "sa": "Saudi Arabia",
-    "se": "Sweden",
+    "rs": "Serbia",
     "sg": "Singapore",
     "sk": "Slovakia",
+    "za": "South Africa",
+    "kr": "South Korea",
+    "se": "Sweden",
+    "ch": "Switzerland",
+    "tw": "Taiwan",
     "th": "Thailand",
     "tr": "Turkey",
-    "tw": "Taiwan",
     "ua": "Ukraine",
+    "ae": "United Arab Emirates",
+    "gb": "United Kingdom",
     "us": "United States",
-    "ve": "Venezuela",
-    "za": "South Africa",
+    "ve": "Venezuela"
   };
 
   int selectedCategoryIndex = 0;
-  int selectedCountryIndex = 0;
+  int selectedCountryIndex = 17;
 
   Future<void> getDataByCategory() async {
     isLoading = true;
@@ -90,12 +89,11 @@ class HomeScreenController extends ChangeNotifier {
         host: 'newsapi.org',
         path: '/v2/top-headlines',
         queryParameters: {
+          'apiKey': newsApiKey,
           if (selectedCategoryIndex != 0)
             'category': categories[selectedCategoryIndex],
-          'apiKey': newsApiKey,
           // 'language': 'en',
-          if (selectedCountryIndex != 0)
-            'country': countryNames.keys.elementAt(selectedCountryIndex),
+          'country': countryNames.keys.elementAt(selectedCountryIndex),
         });
 
     log("URL: ${uri.toString()}\n\n");

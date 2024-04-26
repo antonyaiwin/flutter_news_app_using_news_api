@@ -1,5 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_news_app/controller/saved_article_controller.dart';
+import 'package:flutter_news_app/global_widgets/article_card.dart';
+import 'package:provider/provider.dart';
 
 class SavedArticlesScreen extends StatelessWidget {
   const SavedArticlesScreen({super.key});
@@ -8,7 +10,23 @@ class SavedArticlesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Saved Articles'),
+        title: const Text('Saved Articles'),
+      ),
+      body: Consumer<SavedArticleController>(
+        builder: (context, value, child) {
+          if (value.articleKeyList.isEmpty) {
+            return const Center(
+              child: Text('You haven\'t saved any articles yet!'),
+            );
+          }
+          return ListView.separated(
+            itemBuilder: (context, index) => ArticleCard(
+              article: value.getArticle(value.articleKeyList[index]),
+            ),
+            separatorBuilder: (context, index) => const SizedBox(height: 10),
+            itemCount: value.articleKeyList.length,
+          );
+        },
       ),
     );
   }

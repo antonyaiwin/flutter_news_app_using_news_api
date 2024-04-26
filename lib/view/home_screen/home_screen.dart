@@ -1,12 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_news_app/controller/search_screen_controller.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller/home_screen_controller.dart';
 import '../../global_widgets/article_card.dart';
-import '../../model/news_api_response_model.dart';
+import '../../model/article/article_model.dart';
 import '../saved_articles_screen/saved_articles_screen.dart';
 import '../search_screen/search_screen.dart';
 import 'widgets/category_card.dart';
@@ -17,7 +15,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await context.read<HomeScreenController>().getDataByCategory();
+      // await context.read<HomeScreenController>().getDataByCategory();
     });
 
     return DefaultTabController(
@@ -98,7 +96,8 @@ class HomeScreen extends StatelessWidget {
           } else {
             return ListView.builder(
               itemBuilder: (context, index) {
-                Article? article = value.newsApiResponseModel?.articles[index];
+                ArticleModel? article =
+                    value.newsApiResponseModel?.articles[index];
                 return ArticleCard(article: article);
               },
               itemCount: value.newsApiResponseModel?.articles.length ?? 0,
@@ -113,8 +112,8 @@ class HomeScreen extends StatelessWidget {
                   'Antony Aiwin',
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
-                accountEmail: Text('antonyaiwin@mail.com'),
-                currentAccountPicture: CircleAvatar(
+                accountEmail: const Text('antonyaiwin@mail.com'),
+                currentAccountPicture: const CircleAvatar(
                   backgroundImage: NetworkImage(
                       'https://images.pexels.com/photos/4052800/pexels-photo-4052800.jpeg?auto=compress&cs=tinysrgb&w=600'),
                 ),

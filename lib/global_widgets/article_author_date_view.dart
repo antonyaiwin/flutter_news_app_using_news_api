@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../model/news_api_response_model.dart';
+import '../model/article/article_model.dart';
 
 class ArticleAuthorDateView extends StatelessWidget {
   const ArticleAuthorDateView({
@@ -9,7 +9,7 @@ class ArticleAuthorDateView extends StatelessWidget {
     required this.article,
   });
 
-  final Article article;
+  final ArticleModel article;
 
   @override
   Widget build(BuildContext context) {

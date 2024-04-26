@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_news_app/controller/home_screen_controller.dart';
+import 'package:flutter_news_app/controller/saved_article_controller.dart';
+import 'package:flutter_news_app/model/article/article_model.dart';
+import 'package:flutter_news_app/model/article/source_model.dart';
 import 'package:flutter_news_app/view/home_screen/home_screen.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(ArticleModelAdapter());
+  Hive.registerAdapter(SourceAdapter());
+  await Hive.openBox<ArticleModel>(SavedArticleController.hiveBoxName);
   runApp(const MyApp());
 }
 
@@ -18,6 +27,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => HomeScreenController(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => SavedArticleController(),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

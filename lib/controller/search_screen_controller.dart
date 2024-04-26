@@ -8,13 +8,14 @@ import 'package:flutter_news_app/utils/debouncer.dart';
 import 'package:http/http.dart' as http;
 
 import '../auth/secrets.dart';
+import '../model/article/article_model.dart';
 
 class SearchScreenController extends ChangeNotifier {
   TextEditingController searchController = TextEditingController();
   late Debouncer debouncer;
   NewsApiResponseModel? newsApiResponseModel;
   SearchScreenController() : debouncer = Debouncer(milliSeconds: 1000);
-  List<Article> get articles => newsApiResponseModel?.articles ?? [];
+  List<ArticleModel> get articles => newsApiResponseModel?.articles ?? [];
   void searchData(String query) {
     Uri uri = Uri(
         scheme: 'https',
