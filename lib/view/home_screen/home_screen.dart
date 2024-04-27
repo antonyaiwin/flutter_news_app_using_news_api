@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      // await context.read<HomeScreenController>().getDataByCategory();
+      await context.read<HomeScreenController>().getDataByCategory();
     });
 
     return DefaultTabController(
@@ -117,6 +117,8 @@ class HomeScreen extends StatelessWidget {
                   backgroundImage: NetworkImage(
                       'https://images.pexels.com/photos/4052800/pexels-photo-4052800.jpeg?auto=compress&cs=tinysrgb&w=600'),
                 ),
+                decoration:
+                    BoxDecoration(color: const Color.fromARGB(255, 126, 9, 1)),
               ),
               ListTile(
                 onTap: () {
@@ -129,7 +131,7 @@ class HomeScreen extends StatelessWidget {
                 leading: const Icon(Icons.bookmark),
                 title: const Text('Saved Articles'),
                 trailing: const Icon(Icons.arrow_right),
-              )
+              ),
             ],
           ),
         ),

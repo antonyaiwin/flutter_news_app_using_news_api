@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_news_app/controller/saved_article_controller.dart';
+import 'package:flutter_news_app/core/constants/image_constants.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,48 +17,23 @@ class ArticleScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Happy Reading'),
-        centerTitle: true,
-        actions: [
-          IconButton(
-              onPressed: () {
-                Share.share(article.url);
-              },
-              icon: const Icon(Icons.share)),
-          Consumer<SavedArticleController>(
-            builder: (context, value, child) => IconButton(
-              onPressed: () {
-                value.toggleSaveArticle(article);
-              },
-              icon: Icon(
-                value.isArticleSaved(article) == null
-                    ? Icons.bookmark_border
-                    : Icons.bookmark,
-              ),
-            ),
-          ),
-        ],
+        backgroundColor: Colors.transparent,
       ),
+      extendBodyBehindAppBar: true,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(3),
-              child: Hero(
-                tag: article,
-                child: ClipRRect(
-                  // borderRadius: BorderRadius.circular(10),
-                  child: AspectRatio(
-                    aspectRatio: 16 / 9,
-                    child: CachedNetworkImage(
-                      fit: BoxFit.cover,
-                      imageUrl: article.urlToImage ?? '',
-                      placeholder: (context, url) =>
-                          const Center(child: CircularProgressIndicator()),
-                      errorWidget: (context, url, error) =>
-                          Image.asset('assets/images/no_image.jpg'),
-                    ),
-                  ),
+            Hero(
+              tag: article,
+              child: ClipRRect(
+                child: CachedNetworkImage(
+                  fit: BoxFit.contain,
+                  imageUrl: article.urlToImage ?? '',
+                  placeholder: (context, url) => const Padding(
+                      padding: EdgeInsets.all(100),
+                      child: CircularProgressIndicator()),
+                  errorWidget: (context, url, error) =>
+                      Image.asset(ImageConstants.noImagePlaceholder),
                 ),
               ),
             ),
@@ -98,14 +74,75 @@ class ArticleScreen extends StatelessWidget {
                                 .titleSmall
                                 ?.copyWith(
                                   fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).colorScheme.primary,
                                 ),
                           ),
-                          const Icon(Icons.arrow_right),
+                          Icon(
+                            Icons.arrow_right,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                         ],
                       ),
                     ),
                   ),
                 ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: Row(
+          children: [
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  Share.share(article.url);
+                },
+                child: SizedBox(
+                  height: kToolbarHeight,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.share),
+                      const SizedBox(width: 10),
+                      Text(
+                        'Share Article',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: InkWell(
+                onTap: () {
+                  context
+                      .read<SavedArticleController>()
+                      .toggleSaveArticle(article);
+                },
+                child: SizedBox(
+                  height: kToolbarHeight,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Consumer<SavedArticleController>(
+                        builder: (context, value, child) => Icon(
+                          value.isArticleSaved(article) == null
+                              ? Icons.bookmark_border
+                              : Icons.bookmark,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        'Save Article',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ],

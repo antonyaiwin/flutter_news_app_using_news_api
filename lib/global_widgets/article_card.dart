@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_news_app/controller/saved_article_controller.dart';
+import 'package:flutter_news_app/core/constants/image_constants.dart';
 import 'package:provider/provider.dart';
 
 import '../model/article/article_model.dart';
@@ -46,7 +47,7 @@ class ArticleCard extends StatelessWidget {
                     placeholder: (context, url) =>
                         const Center(child: CircularProgressIndicator()),
                     errorWidget: (context, url, error) => Image.asset(
-                      'assets/images/no_image.jpg',
+                      ImageConstants.noImagePlaceholder,
                       fit: BoxFit.cover,
                     ),
                   ),
