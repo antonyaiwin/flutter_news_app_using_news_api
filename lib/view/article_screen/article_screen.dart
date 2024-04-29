@@ -50,7 +50,7 @@ class ArticleScreen extends StatelessWidget {
                   ArticleAuthorDateView(article: article),
                   const SizedBox(height: 30),
                   Text(
-                    article.content ?? '',
+                    article.content ?? article.description ?? '',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontSize: 20,
                         ),
