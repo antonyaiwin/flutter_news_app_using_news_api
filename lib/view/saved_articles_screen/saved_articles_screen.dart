@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_news_app/controller/saved_article_controller.dart';
 import 'package:flutter_news_app/global_widgets/article_card.dart';
+import 'package:flutter_news_app/model/article/article_model.dart';
 import 'package:provider/provider.dart';
 
 class SavedArticlesScreen extends StatelessWidget {
@@ -20,9 +21,16 @@ class SavedArticlesScreen extends StatelessWidget {
             );
           }
           return ListView.separated(
-            itemBuilder: (context, index) => ArticleCard(
-              article: value.getArticle(value.articleKeyList[index]),
-            ),
+            itemBuilder: (context, index) {
+              ArticleModel? article =
+                  value.getArticle(value.articleKeyList[index]);
+              if (article == null) {
+                return const SizedBox();
+              }
+              return ArticleCard(
+                article: article,
+              );
+            },
             separatorBuilder: (context, index) => const SizedBox(height: 10),
             itemCount: value.articleKeyList.length,
           );

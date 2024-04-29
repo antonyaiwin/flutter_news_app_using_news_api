@@ -9,7 +9,9 @@ import '../model/news_api_response_model.dart';
 
 class HomeScreenController extends ChangeNotifier {
   NewsApiResponseModel? newsApiResponseModel;
+  NewsApiResponseModel? topHeadlinesResponseModel;
   bool isLoading = false;
+  bool isTopHeadlinesLoading = false;
 
   List<String> categories = [
     'all',
@@ -80,6 +82,37 @@ class HomeScreenController extends ChangeNotifier {
 
   int selectedCategoryIndex = 0;
   int selectedCountryIndex = 17;
+  void requestData() {
+    getTopHeadlines();
+    getDataByCategory();
+  }
+
+  Future<void> getTopHeadlines() async {
+    isTopHeadlinesLoading = true;
+    notifyListeners();
+    Uri uri = Uri(
+        scheme: 'https',
+        host: 'newsapi.org',
+        path: '/v2/top-headlines',
+        queryParameters: {
+          'apiKey': newsApiKey,
+          'language': 'en',
+          'pageSize': '5',
+        });
+
+    log("URL: ${uri.toString()}\n\n");
+
+    var response = await http.get(uri);
+    log(response.body);
+    if (response.statusCode == 200) {
+      topHeadlinesResponseModel =
+          NewsApiResponseModel.fromJson(jsonDecode(response.body));
+    } else {
+      log('failed');
+    }
+    isTopHeadlinesLoading = false;
+    notifyListeners();
+  }
 
   Future<void> getDataByCategory() async {
     isLoading = true;

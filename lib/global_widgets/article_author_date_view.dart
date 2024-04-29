@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_news_app/utils/functions.dart';
 
 import '../model/article/article_model.dart';
 
@@ -32,7 +32,7 @@ class ArticleAuthorDateView extends StatelessWidget {
         const Text('•'),
         const SizedBox(width: 5),
         Text(
-          DateFormat('EEEE, d MMMM yyyy').format(article.publishedAt),
+          getFormattedDate(article.publishedAt),
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Colors.white,
               ),

@@ -1,13 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_news_app/controller/saved_article_controller.dart';
 import 'package:flutter_news_app/core/constants/image_constants.dart';
-import 'package:provider/provider.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../global_widgets/article_author_date_view.dart';
 import '../../model/article/article_model.dart';
+import 'widgets/article_bottom_actions_card.dart';
 
 class ArticleScreen extends StatelessWidget {
   const ArticleScreen({super.key, required this.article});
@@ -24,7 +22,7 @@ class ArticleScreen extends StatelessWidget {
         child: Column(
           children: [
             Hero(
-              tag: article,
+              tag: article.urlToImage ?? article,
               child: ClipRRect(
                 child: CachedNetworkImage(
                   fit: BoxFit.contain,
@@ -91,63 +89,7 @@ class ArticleScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight),
-        child: Row(
-          children: [
-            Expanded(
-              child: InkWell(
-                onTap: () {
-                  Share.share(article.url);
-                },
-                child: SizedBox(
-                  height: kToolbarHeight,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.share),
-                      const SizedBox(width: 10),
-                      Text(
-                        'Share Article',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: InkWell(
-                onTap: () {
-                  context
-                      .read<SavedArticleController>()
-                      .toggleSaveArticle(article);
-                },
-                child: SizedBox(
-                  height: kToolbarHeight,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Consumer<SavedArticleController>(
-                        builder: (context, value, child) => Icon(
-                          value.isArticleSaved(article) == null
-                              ? Icons.bookmark_border
-                              : Icons.bookmark,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        'Save Article',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      bottomNavigationBar: ArticleBottomActionsCard(article: article),
     );
   }
 }
